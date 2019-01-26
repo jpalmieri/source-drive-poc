@@ -1,7 +1,38 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
+const path = require(`path`)
+const { createFilePath } = require(`gatsby-source-filesystem`)
 
-// You can delete this file if you're not using it
+exports.createPages = ({ graphql, actions }) => {
+  return graphql(`
+    {
+      allDriveNode {
+        edges {
+          node {
+            fields { slug }
+          }
+        }
+      }
+    }
+  `).then(result => {
+    if (result.errors) {
+      throw result.errors
+    }
+
+    // Create blog post pages.
+    const { createPage } = actions
+    const postTemplate = path.resolve(`src/templates/Post.jsx`)
+    result.data.allDriveNode.edges.forEach(edge => {
+      const {
+        localFile,
+        fields
+      } = edge.node
+      createPage({
+        // Path for this page — required
+        path: `posts/${fields.slug}/`,
+        component: postTemplate,
+        context: {
+          slug: fields.slug
+        },
+      })
+    })
+  })
+}

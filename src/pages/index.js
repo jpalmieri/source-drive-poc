@@ -1,21 +1,58 @@
 import React from 'react'
-import { Link } from 'gatsby'
+import { graphql, Link } from 'gatsby'
+import Image from 'gatsby-image'
+import StackGrid from 'react-stack-grid'
+import sizeMe from 'react-sizeme'
 
 import Layout from '../components/layout'
-import Image from '../components/image'
 import SEO from '../components/seo'
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+function responsiveColumnWidth(width) {
+  if (width >= 768) {
+    return '33.33%'
+  } else if (width >= 414) {
+    return '50%'
+  } else {
+    return '100%'
+  }
+}
 
-export default IndexPage
+function IndexPage({ data, size }) {
+  return (
+    <Layout>
+      <SEO title="Photos" />
+      <StackGrid columnWidth={responsiveColumnWidth(size.width)}>
+      {data.allDriveNode.edges.map(({ node }) => {
+          return (
+            <div key={node.fields.slug}>
+              <Link to={`posts/${node.fields.slug.split('.')[0]}/`}>
+                <Image fluid={node.localFile.childImageSharp.fluid} alt={node.fields.slug} />
+              </Link>
+            </div>
+          )
+        }).reverse()}
+      </StackGrid>
+    </Layout>
+  )
+}
+
+export const query = graphql`
+  query {
+    allDriveNode {
+      edges {
+        node {
+          fields { slug }
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 320) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export default sizeMe()(IndexPage)

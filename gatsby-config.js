@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
@@ -11,6 +13,14 @@ module.exports = {
       options: {
         name: `images`,
         path: `${__dirname}/src/images`,
+      },
+    },
+    {
+      resolve: 'gatsby-source-drive',
+      options: {
+        key: process.env.GOOGLE_KEY,
+        serviceAccountEmail: process.env.GOOGLE_SA_EMAIL,
+        folderId: process.env.FOLDER_ID
       },
     },
     `gatsby-transformer-sharp`,
