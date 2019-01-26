@@ -5147,8 +5147,10 @@ gatsby-react-router-scroll@^2.0.2:
     scroll-behavior "^0.9.9"
     warning "^3.0.0"
 
-gatsby-source-drive@../gatsby-source-drive:
+gatsby-source-drive@^0.0.1:
   version "0.0.1"
+  resolved "https://registry.yarnpkg.com/gatsby-source-drive/-/gatsby-source-drive-0.0.1.tgz#39a41e7d1d77ba6301210024300048065f70b3e7"
+  integrity sha512-mfzIwBDC2Ol+VcsfUG7bSutBwsPXYHG1NLMF5A1/AsyPpqG/0FD9d1VGeuCaRQ/Rjo+W7qeYW/iG2IH0YU2heQ==
   dependencies:
     babel-runtime "^6.26.0"
     gatsby-source-filesystem "^2.0.17"
